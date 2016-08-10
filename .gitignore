@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Makefile.in
 include/xeno_config.h.in*
 config/compile
@@ -16,8 +15,4 @@ config/missing
 configure
 aclocal.m4
 autom4te.cache
-=======
-# Ignore Makefile.in file
-*.in
 *.bu
->>>>>>> AUTOSAR_SKIN
