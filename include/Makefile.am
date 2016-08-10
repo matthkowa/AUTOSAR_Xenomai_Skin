@@ -4,6 +4,7 @@ SUBDIRS = 		\
 	boilerplate	\
 	copperplate	\
 	smokey		\
+	autosar		\
 	alchemy		\
 	psos 		\
 	trank		\
@@ -20,6 +21,7 @@ endif
 
 DIST_SUBDIRS = 		\
 	alchemy		\
+	autosar		\
 	boilerplate	\
 	cobalt 		\
 	copperplate	\

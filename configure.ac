@@ -870,6 +870,7 @@ AC_CONFIG_FILES([ \
 	lib/copperplate/Makefile \
 	lib/copperplate/regd/Makefile \
 	lib/alchemy/Makefile \
+	lib/autosar/Makefile \
 	lib/vxworks/Makefile \
 	lib/psos/Makefile \
 	lib/analogy/Makefile \
@@ -937,6 +938,7 @@ AC_CONFIG_FILES([ \
 	include/boilerplate/Makefile \
 	include/copperplate/Makefile \
 	include/alchemy/Makefile \
+	include/autosar/Makefile \
 	include/vxworks/Makefile \
 	include/psos/Makefile \
 	include/smokey/Makefile \

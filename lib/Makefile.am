@@ -12,6 +12,7 @@ endif
 SUBDIRS +=		\
 	copperplate	\
 	smokey		\
+	autosar		\
 	alchemy		\
 	vxworks		\
 	psos
@@ -19,6 +20,7 @@ SUBDIRS +=		\
 DIST_SUBDIRS = 		\
 	alchemy		\
 	analogy		\
+	autosar		\
 	boilerplate	\
 	cobalt		\
 	copperplate	\
