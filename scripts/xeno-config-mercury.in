@@ -34,7 +34,7 @@ Options :
         --ccld
         --arch
         --prefix
-        --[skin=]posix|vxworks|psos|alchemy|autosar|rtdm|smokey
+        --[skin=]posix|vxworks|psos|alchemy|rtdm|smokey|autosar
         --auto-init|no-auto-init
         --cflags
         --ldflags
@@ -153,7 +153,7 @@ if test x$do_cflags = xy; then
     test -z "$skin_list" && skin_list=posix
     for skin in $skin_list; do
 	case "$skin" in
-	    vxworks|psos|alchemy|autosar|smokey)
+	    vxworks|psos|alchemy|smokey|autosar)
 		cflags="$cflags -I$XENO_INCLUDE_DIR/$skin"
 		;;
 	    posix|rtdm)
@@ -175,7 +175,7 @@ if test x$do_ldflags = xy; then
 	case "$skin" in
 	    posix|rtdm)
 		;;
-	    vxworks|psos|alchemy|autosar|smokey)
+	    vxworks|psos|alchemy|smokey|autosar)
 		copperplate="-lcopperplate"
 		ldflags="-l$skin $ldflags"
 		;;

@@ -52,7 +52,7 @@ Options :
         --ccld
         --arch
         --prefix
-        --[skin=]posix|vxworks|psos|alchemy|autosar|rtdm|smokey|cobalt
+        --[skin=]posix|vxworks|psos|alchemy|rtdm|smokey|cobalt|autosar
         --auto-init|no-auto-init
         --cflags
         --ldflags
@@ -156,7 +156,7 @@ while test $# -gt 0; do
 		skin_list="$skin_list `expr "$1" : '--skin=\(.*\)'`"
 	    fi
 	    ;;
-	--posix|--cobalt|--vxworks|--psos|--alchemy|--autosar|--rtdm|--smokey)
+	--posix|--cobalt|--vxworks|--psos|--alchemy|--rtdm|--smokey|--autosar)
 	    skin_list="$skin_list `expr "$1" : '--\(.*\)'`"
 	    ;;
 	--cflags)
@@ -199,7 +199,7 @@ if test x$do_cflags = xy; then
 		;;
 	    cobalt)
 		;;
-	    vxworks|psos|alchemy|autosar|smokey)
+	    vxworks|psos|alchemy|smokey|autosar)
 		cflags="$cflags -I$XENO_INCLUDE_DIR/$skin"
 		;;
 	    *)
@@ -228,6 +228,7 @@ if test x$do_ldflags = xy; then
 		# do NOT wrap POSIX symbols in application code
 		# with --cobalt. On the contrary, --posix does.
 		;;
+	    vxworks|psos|alchemy|smokey|autosar)
 		copperplate="-lcopperplate"
 		ldflags="$ldflags -l$skin"
 		if [ -r ${XENO_LIBRARY_DIR}/${skin}.wrappers ]; then
