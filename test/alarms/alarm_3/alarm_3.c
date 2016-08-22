@@ -8,7 +8,7 @@ static void checkError(StatusType func_ret,StatusType exp_ret,int id) {
 }	
 	
 
-TASK(t1){
+TASK(OsTask1){
 	StatusType ret;
 	TickType start, cycle;
 
@@ -48,7 +48,7 @@ TASK(t1){
 }
 
 
-TASK(t2){
+TASK(OsTask2){
 	TerminateTask();
 }
 
