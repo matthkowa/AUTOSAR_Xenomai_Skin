@@ -24,8 +24,8 @@ static DEFINE_NAME_GENERATOR(resource_namegen, "resource",
 static struct OsResource * getResource(ResourceType ResID){
 
 	struct OsResource * osResource = NULL;
-	if(ResID < RESOURCE_COUNT && ResID >= 0){	
-		osResource =  os.OsResource[ResID];	
+	if(ResID <= RESOURCE_COUNT && ResID >= 1){	
+		osResource =  os.OsResource[ResID-1];	
 	}	
 	return osResource;
 

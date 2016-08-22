@@ -74,8 +74,8 @@ static struct registry_operations registry_ops;
 
 struct OsAlarm * get_alarm(AlarmType alarmID){
 	struct OsAlarm * osAlarm = NULL;
-	if(alarmID < ALARM_COUNT && alarmID >= 0){
-		osAlarm =  os.OsAlarm[alarmID];
+	if(alarmID <= ALARM_COUNT && alarmID >= 1){
+		osAlarm =  os.OsAlarm[alarmID-1];
 	}	
 	return osAlarm;	
 }	

@@ -86,8 +86,8 @@ static void put_OsTaskXenomai(struct OsTaskXenomai *__task)
 
 static struct OsTask * get_task(TaskType __taskID){
 	struct OsTask * __osTask = NULL;
-	if(__taskID < TASK_COUNT && __taskID >= 0){	
-		__osTask =  os.OsTask[__taskID];	
+	if(__taskID <= TASK_COUNT && __taskID >= 1){	
+		__osTask =  os.OsTask[__taskID-1];	
 	}	
 	return __osTask;	
 }	

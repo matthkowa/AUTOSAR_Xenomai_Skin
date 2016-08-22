@@ -20,15 +20,15 @@ static void __incrementCounter(struct OsCounter * osCounter);
 
 static struct OsCounter * get_counter(CounterType counterID){
 	
-	if(counterID <= COUNTER_COUNT && counterID >= 0){
-		return os.OsCounter[counterID];
+	if(counterID <= COUNTER_COUNT && counterID >= 1){
+		return os.OsCounter[counterID-1];
 	}	
 	return NULL;
 }
 
 static struct OsAlarm * get_alarm_link_to_counter(CounterType counterID,AlarmType alarmID){
 	struct OsAlarm * osAlarm = NULL;	
-	if(counterID >= COUNTER_COUNT || counterID < 0)
+	if(counterID > COUNTER_COUNT || counterID < 1)
 		return NULL;
 	if(alarmID >= ALARM_COUNT ||  alarmID < 0)
 		return NULL;

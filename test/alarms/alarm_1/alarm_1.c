@@ -8,7 +8,7 @@ static void checkError(StatusType func_ret,StatusType exp_ret,int id) {
 }	
 	
 
-TASK(t1){
+TASK(OsTask1){
 	StatusType ret;
 	AlarmBaseType Info;
 	
@@ -18,11 +18,11 @@ TASK(t1){
 	ret = GetAlarmBase(-1,&Info);
 	checkError(ret, E_OS_ID,2);
 	
-	ChainTask(t2);
+	ChainTask(OsTask2);
 }
 
 
-TASK(t2){
+TASK(OsTask2){
 	StatusType ret;
 	TickType tick;
 	
@@ -38,7 +38,7 @@ TASK(t2){
 	TerminateTask();
 }
 
-TASK(t3){
+TASK(OsTask3){
 	TerminateTask();
 }
 

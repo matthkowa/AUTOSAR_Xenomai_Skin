@@ -35,16 +35,16 @@ static void initSystem (void){
 #endif
   	StatusType result = E_OK;
 #if RESOURCE_COUNT > 0
-	for (i = 0; i < RESOURCE_COUNT; i++)
+	for (i = 1; i <= RESOURCE_COUNT; i++)
 		result = __CreateResource(i);	
 #endif
 #if TASK_COUNT > 0
-	for (i = 0; i < TASK_COUNT; i++)
-		result = __CreateTask(i);	
+	for (i = 1; i <= TASK_COUNT; i++)
+		result = __CreateTask(i);
 #endif
 #if ALARM_COUNT > 0
-	for (i = 0; i < ALARM_COUNT; i++)	
-		result = __CreateAlarm(i);  
+	for (i = 1; i <= ALARM_COUNT; i++)	
+		result = __CreateAlarm(i); 
 #endif
 
 	if(result){
@@ -70,14 +70,13 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 		OsTaskAutostart = os.OsTask[i]->OsTaskAutostart;
 	/*  each AUTOSTART task is activated if it belong to the appMode*/
 		if( OsTaskAutostart != NULL && OsTaskAutostart->OsTaskAppModeRef->OsAppModeID & app_mode_mask){		
-			result = __ActivateTask(i);
+			result = __ActivateTask(i+1);
 		}
 	}
 #endif
 #if ALARM_COUNT > 0
   	for(i = 0; i < ALARM_COUNT; i++)	{
 		OsAlarmAutostart = os.OsAlarm[i]->OsAlarmAutostart;
-		warning("%d : %d ",OsAlarmAutostart->OsAlarmAppModeRef->OsAppModeID,app_mode_mask);
 		if( OsAlarmAutostart != NULL && OsAlarmAutostart->OsAlarmAppModeRef->OsAppModeID & app_mode_mask)
 			os.OsAlarm[i]->OsAlarmXenomai->isActive = TRUE;
 			//result = __ActivateAlarm(i);
@@ -85,7 +84,7 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 #endif
 
 #if COUNTER_COUNT > 0
-	for(i = 0; i < COUNTER_COUNT; i++)	
+	for(i = 1; i <= COUNTER_COUNT; i++)	
 		__CreateCounter(i);
 #endif
 	if(result){
@@ -162,11 +161,11 @@ void ShutdownOS (StatusType Error){
 #endif
 
 #if ALARM_COUNT > 0
-	for (i = 0; i < ALARM_COUNT; i++)
+	for (i = 1; i <= ALARM_COUNT; i++)
 		__StopAlarm(i);	
 #endif
 #if TASK_COUNT > 0
-	for (i = 0; i < TASK_COUNT; i++)	
+	for (i = 1; i <= TASK_COUNT; i++)	
 		__StopTask(i);
 #endif
 		
