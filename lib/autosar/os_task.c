@@ -12,6 +12,7 @@
 #include <copperplate/heapobj.h>
 #include <copperplate/threadobj.h>
 #include <copperplate/syncobj.h>
+#include <copperplate/eventobj.h>
 #include <copperplate/internal.h>
 #include <copperplate/registry-obstack.h>
 #include <copperplate/registry.h>
@@ -20,6 +21,7 @@
 #include "app/app_define.h"
 #include "app/app_config.h"
 #include "os_hook.h"
+#include "os_timer.h"
 
 extern struct Os os;
 struct syncluster xenomai_autosar_task_table;
@@ -159,7 +161,6 @@ static void *task_entry(void *__arg){
 	struct service __svc;
 	unsigned int __mask = 0;
 	int __evobj_mode = 0;	
-	struct timespec __ts,__ps;
 	int __ret;
 	
 	CANCEL_DEFER(__svc);
@@ -170,22 +171,19 @@ static void *task_entry(void *__arg){
 	}	
 	threadobj_notify_entry();
 	CANCEL_RESTORE(__svc);
-
-	autosar_rel_timeout(TM_INFINITE, &__ps);	
-	clockobj_convert_clocks(&autosar_clock, &__ps , CLOCK_REALTIME, &__ts);
 	__evobj_mode = EVOBJ_ANY;
-	
 	while(1){		
 		if (__task->activation_number == 0 ){
 			CANCEL_DEFER(__svc);
 			__task->state = SUSPENDED;
-			__ret = eventobj_wait(&__task->evobj, 1, &__mask,__evobj_mode, &__ts);
+			__ret = eventobj_wait(&__task->evobj, 1, &__mask,__evobj_mode, NULL);
 			if(__ret == -EINTR) // Interruption from thread_cancel
 				break;
-			__ret = eventobj_clear(&__task->evobj, 1, &__mask);			
+			if(__ret)
+				break;
+			__ret = eventobj_clear(&__task->evobj, 1, &__mask);	
 			CANCEL_RESTORE(__svc);	
-		}		
-		
+		}
 #if OS_PRE_TASK_HOOK
 		setHigherPrio(__osTask);
 		OS_PRE_TASK_HOOK();
@@ -342,7 +340,6 @@ StatusType __CreateTask(TaskType __taskID){
 	__thread_ret = threadobj_lock(&__task->thobj);
 	__thread_ret= eventobj_init(&__task->evobj, 0, __evobj_flags,
 			    fnref_put(libautosar, event_finalize));
-	
 	__osTask->OsTaskXenomai = __task;
 	__task->state = SUSPENDED;
 	__thread_ret = threadobj_start(&__task->thobj);
