@@ -77,7 +77,9 @@ static void *hook_entry(void *__arg){
 	int __evobj_mode = 0;	
 	int __ret;
 	unsigned int __flag = __hook->flag ;
+#if OS_SHUTDOWN_HOOK | OS_ERROR_HOOK
 	StatusType error = NULL;
+#endif
 	CANCEL_DEFER(__svc);
 	__ret = __bt(hook_prologue_2(__hook));
 	if (__ret) {
@@ -96,8 +98,10 @@ static void *hook_entry(void *__arg){
 				break;
 		
 		__ret = eventobj_clear(&__hook->evobj, __mask, &__mask);	
-		CANCEL_RESTORE(__svc);	
+		CANCEL_RESTORE(__svc);
+#if OS_SHUTDOWN_HOOK | OS_ERROR_HOOK	
 		error = __hook->Error;
+#endif
 		lockScheduler(__hook);
 #if OS_STARTUP_HOOK	
 		if(__flag & OS_STARTUP_HOOK_FLAG)
