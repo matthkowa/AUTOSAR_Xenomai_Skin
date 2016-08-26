@@ -10,16 +10,42 @@
 #define _AUTOSAR_HOOK_H
 #include "app/app_define.h"
 #include <autosar/os.h>
+#include <copperplate/threadobj.h>
+#include <copperplate/cluster.h>
+#include <copperplate/eventobj.h>
 #include "os_types.h"
 
 
+#define OS_STARTUP_HOOK_FLAG 			(1<<0)
+#define OS_SHUTDOWN_HOOK_FLAG 			(1<<1)
+#define OS_ERROR_HOOK_FLAG 			(1<<2)
+#define OS_PRE_TASK_HOOK_FLAG 			(1<<3)
+#define OS_POST_TASK_HOOK_FLAG 			(1<<4)
 
+
+struct OsHookXenomai {
+	char name[XNOBJECT_NAME_LEN]; 		/*!< Name of the task */
+	struct threadobj thobj;			/*!< Thread object (Xenomai) */
+	void (*entry)(void);			/*!< Function to call */
+	struct clusterobj cobj;			/*!< Cluster object (Xenomai) */
+	struct eventobj evobj;
+	StatusType Error;
+	int flag;
+};
+
+struct OsHookXenomai * OsHook_table[5];
 
 OSServiceIdType _OSErrorGetServiceId;
 
+StatusType __CreateHook(unsigned int flag);
+
+StatusType __ActivateOsHook(unsigned int flag,StatusType error);
+
+
+void __StopHook(unsigned int __flag);
 
 #if OS_STARTUP_HOOK
-	extern void StartUpHook(void);
+	extern void StartupHook(void);
 #endif
 #if OS_SHUTDOWN_HOOK
 	extern void ShutdownHook(StatusType Error);

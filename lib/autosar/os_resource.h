@@ -32,7 +32,7 @@ typedef enum ResourceProperty OsResourceProperty;
 struct OsResource{
 	OsResourceProperty OsResourceProperty;			/*!< OsResourceProperty */
 //	struct OsApplication * OsApplicationAccessingApplication;
-	struct OsResource ** OsResourceLinkedResourceRef;	/*!< Array of linked resources */
+	struct OsResource * OsResourceLinkedResourceRef;	/*!< Array of linked resources */
 	struct OsResourceXenomai * OsResourceXenomai;		/*!< Xenomai implementation for a Resource */
 };
 
@@ -50,6 +50,7 @@ struct OsResourceXenomai {
 	struct clusterobj cobj;					/*!< Xenomai Cluster object */
 	TaskType owner;						/*!< Task owner of the resource */
 	struct fsobj fsobj;					/*!< File system object to register a resource with FUSE */
+	unsigned int status;
 };
 
 

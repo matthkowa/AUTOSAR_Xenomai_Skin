@@ -9,6 +9,8 @@
 #include "os_os.h"
 #include "os_task.h"
 #include "os_counter.h"
+#include "os_hook.h"
+#include "os_resource.h"
 #include "app/app_config.h"
 #include "app/app_define.h"
 
@@ -28,6 +30,7 @@
 // TODO : IF NO TASK DEFINE EMPTY FUNCTION OR REMOVE OS.H FUNCTION ?
 AppModeType currentMode;
 extern struct Os os;
+int shutdown_state = 0;
 
 static void initSystem (void){
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || RESOURCE_COUNT > 0
@@ -36,7 +39,7 @@ static void initSystem (void){
   	StatusType result = E_OK;
 #if RESOURCE_COUNT > 0
 	for (i = 1; i <= RESOURCE_COUNT; i++)
-		result = __CreateResource(i);	
+		result = __CreateResource(i);
 #endif
 #if TASK_COUNT > 0
 	for (i = 1; i <= TASK_COUNT; i++)
@@ -47,6 +50,21 @@ static void initSystem (void){
 		result = __CreateAlarm(i); 
 #endif
 
+#if OS_STARTUP_HOOK 
+	__CreateHook(OS_STARTUP_HOOK_FLAG); 
+#endif
+#if OS_SHUTDOWN_HOOK
+	__CreateHook(OS_SHUTDOWN_HOOK_FLAG); 
+#endif
+#if OS_ERROR_HOOK
+	__CreateHook(OS_ERROR_HOOK_FLAG); 
+#endif
+#if OS_PRE_TASK_HOOK
+	__CreateHook(OS_PRE_TASK_HOOK_FLAG); 
+#endif
+#if OS_POST_TASK_HOOK
+	__CreateHook(OS_POST_TASK_HOOK_FLAG); 
+#endif
 	if(result){
 		//TODO ERROR HOOK		
 	}
@@ -91,8 +109,19 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 		//TODO ERROR HOOK
 		
 	}
-	while(1){};
-	ShutdownOS(E_OK);
+	struct timespec rqt;
+	struct service svc;
+	long long ticks = 1000;
+	
+	CANCEL_DEFER(svc);
+	clockobj_ticks_to_timeout(&autosar_clock, ticks, &rqt);
+	CANCEL_RESTORE(svc);
+	threadobj_sleep(&rqt);
+	
+
+	
+	while(!shutdown_state){threadobj_sleep(&rqt);};
+	warning("End");
 }
 	
 /**
@@ -122,7 +151,7 @@ void StartOS (AppModeType Mode){
 	/* Start autostart task & alarm */
 	initSystem();
 #if OS_STARTUP_HOOK
-	OS_STARTUP_HOOK();
+	__ActivateOsHook(OS_STARTUP_HOOK_FLAG,E_OK);
 #endif
 	startSystem(Mode);
 
@@ -153,7 +182,7 @@ void StartOS (AppModeType Mode){
  */
 void ShutdownOS (StatusType Error){
 #if OS_SHUTDOWN_HOOK
-	OS_SHUTDOWN_HOOK();
+	__ActivateOsHook(OS_SHUTDOWN_HOOK_FLAG,Error);
 #endif	
 	__StopCounter();
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 
@@ -168,8 +197,23 @@ void ShutdownOS (StatusType Error){
 	for (i = 1; i <= TASK_COUNT; i++)	
 		__StopTask(i);
 #endif
-		
-	
+warning("Stoped Task");
+#if OS_STARTUP_HOOK 
+	__StopHook(OS_STARTUP_HOOK_FLAG); 
+#endif
+#if OS_SHUTDOWN_HOOK
+	__StopHook(OS_SHUTDOWN_HOOK_FLAG); 
+#endif
+#if OS_ERROR_HOOK
+	__StopHook(OS_ERROR_HOOK_FLAG); 
+#endif
+#if OS_PRE_TASK_HOOK
+	__StopHook(OS_PRE_TASK_HOOK_FLAG); 
+#endif
+#if OS_POST_TASK_HOOK
+	__StopHook(OS_POST_TASK_HOOK_FLAG); 
+#endif
+	shutdown_state = 1;
 
 }
 

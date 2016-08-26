@@ -63,7 +63,7 @@ static int __resourceInit(struct OsResource * osResource, const char *name)
 	__RT(pthread_mutex_init(&resource->lock, &mattr));
 	pthread_mutexattr_destroy(&mattr);
 	resource->magic = resource_magic;
-
+	resource->status = 0;
 	/*registry_init_file(&resource->fsobj, &registry_ops, 0);
 	ret = __bt(registry_add_file(&resource->fsobj, O_RDONLY,
 				     "/alchemy/mutexes/%s", resource->name));
@@ -79,6 +79,7 @@ static int __resourceInit(struct OsResource * osResource, const char *name)
 		ret = -EEXIST;
 	} else
 		osResource->OsResourceXenomai = resource;
+
 out:
 	CANCEL_RESTORE(svc);
 
@@ -111,6 +112,7 @@ StatusType __GetOsResource(struct OsResource * osResource){
 	struct OsResourceXenomai * resource;
 	StatusType ret = E_OK;
 	int mutex_ret;
+	
 	resource = osResource->OsResourceXenomai;
 	if(resource == NULL){
 #if OS_STATUS == OSOS_EXTENDED
@@ -118,6 +120,14 @@ StatusType __GetOsResource(struct OsResource * osResource){
 #endif
 		goto out;
 	}
+	if(osResource->OsResourceProperty == RESOURCE_LINKED){
+		ret =  __GetOsResource(osResource->OsResourceLinkedResourceRef);
+		if(ret){
+			warning("Linked Resource cannot be locked");
+			goto out;
+		}
+	}
+
 	mutex_ret = -__RT(pthread_mutex_lock(&resource->lock));
 	if(mutex_ret){
 #if OS_STATUS == OSOS_EXTENDED
@@ -125,6 +135,7 @@ StatusType __GetOsResource(struct OsResource * osResource){
 #endif
 		goto out;
 	}
+	resource->status = 1;
 out :
 	return ret;
 }
@@ -162,6 +173,7 @@ StatusType __ReleaseOsResource(struct OsResource * osResource){
 #endif
 		goto out;
 	}
+	resource->status = 0;
 out : 
 	return ret;
 }
@@ -181,17 +193,11 @@ out :
 
 int __GetStatus(struct OsResource * osResource){
 	struct OsResourceXenomai * resource;
-	int mutex_ret = 0;
 	resource = osResource->OsResourceXenomai;
 	if(resource == NULL){
-		goto out;
+		return 0;
 	}
-	mutex_ret = -__RT(pthread_mutex_trylock(&resource->lock));
-	if(mutex_ret == 0)
-		__RT(pthread_mutex_unlock(&resource->lock));
-	
-out : 
-	return mutex_ret;
+	return resource->status;
 }
 
 

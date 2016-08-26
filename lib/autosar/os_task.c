@@ -112,29 +112,6 @@ static int task_prologue_2(struct OsTaskXenomai *__task)
 	return __ret;
 }
 
-#if (OS_PRE_TASK_HOOK || OS_POST_TASK_HOOK)
-static void setHigherPrio(struct OsTask * __osTask){
-	int __prio = T_HIPRIO, __ret;
-	struct OsTaskXenomai *__task = __osTask->OsTaskXenomai;
-	threadobj_lock(&__task->thobj);
-	__ret = threadobj_set_schedprio(&__task->thobj, __prio);
-	if(__ret)
-		warning("Cannot change priority");
-	threadobj_unlock(&__task->thobj);
-
-}
-
-static void setPrio(struct OsTask * __osTask){
-	int __prio = __osTask->OsTaskPriority, __ret;
-	struct OsTaskXenomai *__task = __osTask->OsTaskXenomai;
-	threadobj_lock(&__task->thobj);
-	__ret = threadobj_set_schedprio(&__task->thobj, __prio);
-	if(__ret)
-		warning("Cannot change priority");
-	threadobj_unlock(&__task->thobj);
-}
-#endif
-
 
 static void lockResource(struct OsTask * __osTask){	
 	struct OsResource * __osResource;
@@ -177,23 +154,18 @@ static void *task_entry(void *__arg){
 			CANCEL_DEFER(__svc);
 			__task->state = SUSPENDED;
 			__ret = eventobj_wait(&__task->evobj, 1, &__mask,__evobj_mode, NULL);
-			if(__ret == -EINTR) // Interruption from thread_cancel
-				break;
-			if(__ret)
+
+			if(__ret != 0 && __ret != -ETIMEDOUT)
 				break;
 			__ret = eventobj_clear(&__task->evobj, 1, &__mask);	
 			CANCEL_RESTORE(__svc);	
 		}
 #if OS_PRE_TASK_HOOK
-		setHigherPrio(__osTask);
-		OS_PRE_TASK_HOOK();
-		setPrio(__osTask);
+		__ActivateOsHook(OS_PRE_TASK_HOOK_FLAG,E_OK);
 #endif		/* END OF PRE HOOK */
 		if(__osTask->OsTaskSchedule == TASK_FULL)
 			lockScheduler(__task);
-
 		lockResource(__osTask);
-		
 		
 		__task->state = RUNNING;
 		__osTask->handler();
@@ -202,9 +174,7 @@ static void *task_entry(void *__arg){
 			__task->activation_number--;
 		
 #if OS_POST_TASK_HOOK
-		setHigherPrio(__osTask);
-		OS_POST_TASK_HOOK();
-		setPrio(__osTask);
+		__ActivateOsHook(OS_POST_TASK_HOOK_FLAG,E_OK);
 #endif		/* END OF POST HOOK */
 	}
 	return NULL;
@@ -376,6 +346,11 @@ StatusType __ActivateOsTask(struct OsTask * __osTask){
 			__ret = eventobj_post(&__task->evobj, 1);
 		__task->state = READY;
 	}
+#if OS_STATUS == OSOS_EXTENDED
+	else{		
+		__ret = E_OS_LIMIT;
+	}
+#endif
 	put_OsTaskXenomai(__task);
 	
 	CANCEL_RESTORE(__svc);
@@ -427,7 +402,6 @@ StatusType __TerminateTask(void){
 	}
 	__task =  container_of(__thobj, struct OsTaskXenomai, thobj);
 	__osTask = get_task(__task->autosarID);
-	__task->activation_number = 0;
 	eventobj_clear(&__task->evobj, 1, &__mask); 
 
 	for(__i=0;__i<__osTask->ResourceCount;__i++){
@@ -479,7 +453,6 @@ StatusType __ChainTask(TaskType __taskID){
 	}
 	__task =  container_of(__thobj, struct OsTaskXenomai, thobj);
 	__osTask = get_task(__task->autosarID);
-	__task->activation_number = 0;
 	eventobj_clear(&__task->evobj, 1, &__mask); 
 	for(__i=0;__i<__osTask->ResourceCount;__i++){
 			__osResource = __osTask->OsTaskResourceRef[__i];
@@ -644,9 +617,9 @@ void __StopTask(TaskType __taskID){
 	}
 
 	CANCEL_DEFER(__svc);
+	eventobj_destroy(&__task->evobj);
 	threadobj_lock(&__task->thobj);	
 	threadobj_cancel(&__task->thobj);
-	eventobj_destroy(&__task->evobj);
 	CANCEL_RESTORE(__svc);
 }
 

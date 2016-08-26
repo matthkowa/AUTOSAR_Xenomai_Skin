@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0">
+  <ADMIN-DATA/>
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <ELEMENTS>
+        <ECUC-MODULE-CONFIGURATION-VALUES UUID="20b3d85c-de3d-4b60-aecb-0a7718e500d2">
+          <SHORT-NAME>Os_Test_Alarm</SHORT-NAME>
+          <DESC>
+            <L-2 L="FOR-ALL">Alarm Test XML</L-2>
+          </DESC>
+          <DEFINITION-REF DEST="ECUC-MODULE-DEF">/ARRoot/Os</DEFINITION-REF>
+          <IMPLEMENTATION-CONFIG-VARIANT>RECOMMENDED-CONFIGURATION</IMPLEMENTATION-CONFIG-VARIANT>
+          <MODULE-DESCRIPTION-REF DEST="BSW-IMPLEMENTATION">/ARRoot/Os_impl</MODULE-DESCRIPTION-REF>
+          <CONTAINERS>
+            
+	   <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>alarm1</SHORT-NAME>
+              <DESC>
+                <L-2 L="FOR-ALL"/>
+              </DESC>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsAlarm</DEFINITION-REF>
+              <REFERENCE-VALUES>
+                <ECUC-REFERENCE-VALUE>
+                  <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/ARRoot/Os/OsAlarm/OsAlarmCounterRef</DEFINITION-REF>
+                  <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/ARRoot/Os_Test_Alarm/counter1</VALUE-REF>
+                </ECUC-REFERENCE-VALUE>
+              </REFERENCE-VALUES>
+              <SUB-CONTAINERS>
+                <ECUC-CONTAINER-VALUE>
+                  <SHORT-NAME>OsAlarmAction</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="FOR-ALL"/>
+                  </DESC>
+                  <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/ARRoot/Os/OsAlarm/OsAlarmAction</DEFINITION-REF>
+                  <SUB-CONTAINERS>
+                    <ECUC-CONTAINER-VALUE>
+                      <SHORT-NAME>OsAlarmActivateTask</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="FOR-ALL"/>
+                      </DESC>
+                      <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsAlarm/OsAlarmAction/OsAlarmActivateTask</DEFINITION-REF>
+                      <REFERENCE-VALUES>
+                        <ECUC-REFERENCE-VALUE>
+                          <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/ARRoot/Os/OsAlarm/OsAlarmAction/OsAlarmActivateTask/OsAlarmActivateTaskRef</DEFINITION-REF>
+                          <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/ARRoot/Os_Test_Alarm/OsTask1</VALUE-REF>
+                        </ECUC-REFERENCE-VALUE>
+                      </REFERENCE-VALUES>
+                    </ECUC-CONTAINER-VALUE>
+                  </SUB-CONTAINERS>
+                </ECUC-CONTAINER-VALUE>
+                <ECUC-CONTAINER-VALUE>
+                  <SHORT-NAME>OsAlarmAutostart</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="FOR-ALL"/>
+                  </DESC>
+                  <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart</DEFINITION-REF>
+                  <PARAMETER-VALUES>
+                    <ECUC-TEXTUAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmAutostartType</DEFINITION-REF>
+                      <VALUE>ABSOLUTE</VALUE>
+                    </ECUC-TEXTUAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmCycleTime</DEFINITION-REF>
+                      <VALUE>0</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmAlarmTime</DEFINITION-REF>
+                      <VALUE>1000</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                  </PARAMETER-VALUES>
+                  <REFERENCE-VALUES>
+                    <ECUC-REFERENCE-VALUE>
+                      <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/ARRoot/Os/OsAlarm/OsAlarmAutostart/OsAlarmAppModeRef</DEFINITION-REF>
+                      <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/ARRoot/Os_Test_Alarm/app1</VALUE-REF>
+                    </ECUC-REFERENCE-VALUE>
+                  </REFERENCE-VALUES>
+                </ECUC-CONTAINER-VALUE>
+              </SUB-CONTAINERS>
+            </ECUC-CONTAINER-VALUE>
+            <ECUC-CONTAINER-VALUE UUID="3505ab11-1ec0-48b0-b27e-683fe7c5280a">
+              <SHORT-NAME>app1</SHORT-NAME>
+              <DESC>
+                <L-2 L="FOR-ALL"/>
+              </DESC>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsAppMode</DEFINITION-REF>
+            </ECUC-CONTAINER-VALUE>
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>OsOS</SHORT-NAME>
+              <DESC>
+                <L-2 L="FOR-ALL"/>
+              </DESC>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsOS</DEFINITION-REF>
+              <PARAMETER-VALUES>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsNumberOfCores">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsOS/OsNumberOfCores</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-FLOAT-PARAM-DEF">/ARRoot/Os/OsOS/OsTickPeriod</DEFINITION-REF>
+                  <VALUE>0.001</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsGenerateMemmap</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsGenerateLinkerFile</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsUseOrti</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsTickTimer</DEFINITION-REF>
+                  <VALUE>DECREMENTER</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsGenerateMakefile</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsStackMonitoring</DEFINITION-REF>
+                  <VALUE>0</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsVleInstructionUsed</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsUseGetServiceId</DEFINITION-REF>
+                  <VALUE>0</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsUseParameterAccess</DEFINITION-REF>
+                  <VALUE>0</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsUseResScheduler</DEFINITION-REF>
+                  <VALUE>0</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE S="OsCore">
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsCore</DEFINITION-REF>
+                  <VALUE>p0</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsTarget</DEFINITION-REF>
+                  <VALUE>RaspberryPI</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE S="OsStatus">
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsStatus</DEFINITION-REF>
+                  <VALUE>EXTENDED</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-TEXTUAL-PARAM-VALUE S="OsScalabilityClass">
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsOS/OsScalabilityClass</DEFINITION-REF>
+                  <VALUE>SC1</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+              <SUB-CONTAINERS>
+                <ECUC-CONTAINER-VALUE UUID="7aa9de28-8a0f-4d37-841b-6597d2575617">
+                  <SHORT-NAME>OsHooks</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="FOR-ALL"/>
+                  </DESC>
+                  <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsOS/OsHooks</DEFINITION-REF>
+                  <PARAMETER-VALUES>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsErrorHook</DEFINITION-REF>
+                      <VALUE>1</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsPostTaskHook</DEFINITION-REF>
+                      <VALUE>1</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsPreTaskHook</DEFINITION-REF>
+                      <VALUE>1</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsProtectionHook</DEFINITION-REF>
+                      <VALUE>0</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsShutdownHook</DEFINITION-REF>
+                      <VALUE>1</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsStartupHook</DEFINITION-REF>
+                      <VALUE>1</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                    <ECUC-NUMERICAL-PARAM-VALUE>
+                      <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/ARRoot/Os/OsOS/OsHooks/OsExceptionHook</DEFINITION-REF>
+                      <VALUE>0</VALUE>
+                    </ECUC-NUMERICAL-PARAM-VALUE>
+                  </PARAMETER-VALUES>
+                </ECUC-CONTAINER-VALUE>
+              </SUB-CONTAINERS>
+            </ECUC-CONTAINER-VALUE>
+            
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>OsTask2</SHORT-NAME>
+              <DESC>
+                <L-2 L="FOR-ALL"/>
+              </DESC>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsTask</DEFINITION-REF>
+              <PARAMETER-VALUES>
+                <ECUC-TEXTUAL-PARAM-VALUE S="OsTaskSchedule">
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskSchedule</DEFINITION-REF>
+                  <VALUE>NON</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsTaskActivation">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskActivation</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsTaskPriority">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskPriority</DEFINITION-REF>
+                  <VALUE>30</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsTaskStackSize">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskStackSize</DEFINITION-REF>
+                  <VALUE>500</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+            </ECUC-CONTAINER-VALUE>
+	    <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>OsTask1</SHORT-NAME>
+              <DESC>
+                <L-2 L="FOR-ALL"/>
+              </DESC>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsTask</DEFINITION-REF>
+              <PARAMETER-VALUES>
+                <ECUC-TEXTUAL-PARAM-VALUE S="OsTaskSchedule">
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskSchedule</DEFINITION-REF>
+                  <VALUE>NON</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsTaskActivation">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskActivation</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsTaskPriority">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskPriority</DEFINITION-REF>
+                  <VALUE>10</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE S="OsTaskStackSize">
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsTask/OsTaskStackSize</DEFINITION-REF>
+                  <VALUE>500</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+            </ECUC-CONTAINER-VALUE>
+            <ECUC-CONTAINER-VALUE UUID="8965f43d-8ecb-4abe-999b-63900b2c60ee">
+              <SHORT-NAME>counter1</SHORT-NAME>
+              <DESC>
+                <L-2 L="FOR-ALL"/>
+              </DESC>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/ARRoot/Os/OsCounter</DEFINITION-REF>
+              <PARAMETER-VALUES>
+                <ECUC-TEXTUAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterType</DEFINITION-REF>
+                  <VALUE>HARDWARE</VALUE>
+                </ECUC-TEXTUAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterMaxAllowedValue</DEFINITION-REF>
+                  <VALUE>32000</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterMinCycle</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-FLOAT-PARAM-DEF">/ARRoot/Os/OsCounter/OsSecondsPerTick</DEFINITION-REF>
+                  <VALUE>0.001</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/ARRoot/Os/OsCounter/OsCounterTicksPerBase</DEFINITION-REF>
+                  <VALUE>1</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+            </ECUC-CONTAINER-VALUE>
+          </CONTAINERS>
+        </ECUC-MODULE-CONFIGURATION-VALUES>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
