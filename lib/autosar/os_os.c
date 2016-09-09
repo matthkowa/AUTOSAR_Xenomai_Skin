@@ -11,6 +11,7 @@
 #include "os_counter.h"
 #include "os_hook.h"
 #include "os_resource.h"
+#include "os_isr.h"
 #include "app/app_config.h"
 #include "app/app_define.h"
 
@@ -33,6 +34,11 @@ extern struct Os os;
 int shutdown_state = 0;
 
 static void initSystem (void){
+#if COUNTER_COUNT > 0 && TASK_COUNT <= 0
+	struct timespec rqt;
+	struct service svc;
+	long long ticks = 1000;
+#endif
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 || RESOURCE_COUNT > 0
   	int i; 
 #endif
@@ -100,7 +106,10 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 			//result = __ActivateAlarm(i);
 	}
 #endif
-
+#if ISR_COUNT_MANUEL > 0
+        for(i = 1; i <= ISR_COUNT_MANUEL; i++)	
+		__InitISR(i);
+#endif
 #if COUNTER_COUNT > 0
 	for(i = 1; i <= COUNTER_COUNT; i++)	
 		__CreateCounter(i);
@@ -109,11 +118,11 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 		//TODO ERROR HOOK
 		
 	}
-	struct timespec rqt;
+/*	struct timespec rqt;
 	struct service svc;
 	long long ticks = 1000;
-	
-	CANCEL_DEFER(svc);
+*/	
+	/*CANCEL_DEFER(svc);
 	clockobj_ticks_to_timeout(&autosar_clock, ticks, &rqt);
 	CANCEL_RESTORE(svc);
 	threadobj_sleep(&rqt);
@@ -121,7 +130,21 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 
 	
 	while(!shutdown_state){threadobj_sleep(&rqt);};
-	warning("End");
+	warning("End");*/
+#if TASK_COUNT > 0
+	for(i = 1; i <= TASK_COUNT; i++){
+		warning("Join Task %d",i);	
+		__JoinTask(i);
+		warning("Joined Task %d",i);
+	}
+#else 
+#if COUNTER_COUNT > 0
+	while(!shutdown_state){
+		clockobj_ticks_to_timeout(&autosar_clock, ticks, &rqt);	
+		threadobj_sleep(&rqt);
+	};
+#endif
+#endif
 }
 	
 /**
@@ -183,8 +206,10 @@ void StartOS (AppModeType Mode){
 void ShutdownOS (StatusType Error){
 #if OS_SHUTDOWN_HOOK
 	__ActivateOsHook(OS_SHUTDOWN_HOOK_FLAG,Error);
-#endif	
+#endif
+warning("End of ActivateOsHook");	
 	__StopCounter();
+warning("Stop Counter ?");
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 
   	int i; 
 #endif
@@ -458,7 +483,33 @@ StatusType ReleaseResource(ResourceType ResID){
 	return __ReleaseResource(ResID);
 }
 #endif
+ISRType GetISRID(void){
+	return __GetISRID();
+}
 
+void EnableAllInterrupts(void){
+	__EnableAllInterrupts();
+}
+
+void DisableAllInterrupts(void){
+	__DisableAllInterrupts();
+}
+
+void ResumeAllInterrupts(void){ 
+	__ResumeAllInterrupts();
+}
+
+void SuspendAllInterrupts(void){ 
+	__SuspendAllInterrupts();
+}
+
+void ResumeOSInterrupts(void){ 
+	__ResumeOSInterrupts();
+}
+
+void SuspendOSInterrupts(void){ 
+	__SuspendOSInterrupts();
+}
 #if COUNTER_COUNT > 0
 /**
  * \fn StatusType IncrementCounter(CounterType CounterID)
@@ -505,6 +556,8 @@ StatusType GetCounterValue(CounterType CounterID,TickRefType Value){
 StatusType GetElapsedValue(CounterType CounterID,TickRefType Value,TickRefType ElapsedValue){
 	return __GetElapsedValue(CounterID,Value,ElapsedValue);
 }
+
+
 
 #endif
 /* @} */

@@ -170,12 +170,7 @@ static void *task_entry(void *__arg){
 		__task->state = RUNNING;
 		__osTask->handler();
 
-		if(__task->activation_number > 0)
-			__task->activation_number--;
 		
-#if OS_POST_TASK_HOOK
-		__ActivateOsHook(OS_POST_TASK_HOOK_FLAG,E_OK);
-#endif		/* END OF POST HOOK */
 	}
 	return NULL;
 }
@@ -235,7 +230,7 @@ static StatusType __taskInit(struct OsTask * __osTask,struct OsTaskXenomai *__ta
 	__cta.run = task_entry;
 	__cta.arg = __osTask;
 	__cta.stacksize = 0;// stacksize;
-	__cta.detachstate = PTHREAD_CREATE_DETACHED;
+	__cta.detachstate = PTHREAD_CREATE_JOINABLE;
 	
 	__ret = __bt(copperplate_create_thread(&__cta, &__task->thobj.ptid));
 	if (__ret) {
@@ -244,6 +239,7 @@ static StatusType __taskInit(struct OsTask * __osTask,struct OsTaskXenomai *__ta
 		threadobj_uninit(&__task->thobj);
 		return E_OS_ID;
 	}
+	__task->thread = __task->thobj.ptid;
 	return E_OK;
 }
 
@@ -332,7 +328,9 @@ StatusType __ActivateOsTask(struct OsTask * __osTask){
 	StatusType __ret = E_OK;
 	struct OsTaskXenomai *__task = NULL;
 	struct service __svc;
-	__task = __osTask->OsTaskXenomai;
+	/*unsigned int __mask = 0;
+	int __evobj_mode = 0;
+	*/__task = __osTask->OsTaskXenomai;
 	if(__task == NULL){
 #if OS_STATUS == OSOS_EXTENDED		
 		__ret = E_OS_ID;
@@ -423,7 +421,14 @@ StatusType __TerminateTask(void){
 		threadobj_unlock(&__task->thobj);
 		if(__thread_ret)
 			warning("Failed to unlock the scheduler");
-	}	
+	}
+	if(__task->activation_number > 0)
+			__task->activation_number--;
+
+		
+#if OS_POST_TASK_HOOK
+		__ActivateOsHook(OS_POST_TASK_HOOK_FLAG,E_OK);
+#endif		/* END OF POST HOOK */	
 
 out : 
 #if OS_ERROR_HOOK
@@ -476,7 +481,11 @@ StatusType __ChainTask(TaskType __taskID){
 		if(__thread_ret)
 			warning("Failed to unlock the scheduler");
 	}
-	
+	if(__task->activation_number > 0)
+			__task->activation_number--;	
+#if OS_POST_TASK_HOOK
+		__ActivateOsHook(OS_POST_TASK_HOOK_FLAG,E_OK);
+#endif		/* END OF POST HOOK */
 	__ret = __ActivateTask(__taskID);
 out :
 #if OS_ERROR_HOOK
@@ -600,6 +609,30 @@ out :
 		__CheckError(__ret,OSServiceId_GetTaskState);
 	}
 #endif
+	return __ret;
+}
+
+StatusType __JoinTask(TaskType __taskID){
+	struct OsTask * __osTask;
+	struct OsTaskXenomai *__task;
+	StatusType __ret = E_OK;
+	__osTask = get_task(__taskID);
+	if(__osTask == NULL){
+#if OS_STATUS == OSOS_EXTENDED
+		__ret = E_OS_ID;
+#endif
+		goto out;
+	}
+	__task = __osTask->OsTaskXenomai;
+	if(__task == NULL){
+#if OS_STATUS == OSOS_EXTENDED
+		__ret = E_OS_ID;
+#endif
+		goto out;
+	}
+
+	__ret = -__RT(pthread_join(__task->thread, NULL));
+out :
 	return __ret;
 }
 

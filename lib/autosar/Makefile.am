@@ -6,6 +6,7 @@ libautosar_la_SOURCES =		\
 	os_types.h		\
 	os_application.h	\
 	os_isr.h		\
+	os_isr.c		\
 	os_scheduletable.h 	\
 	os_spinlock.h		\
 	os_event.h		\
@@ -19,6 +20,8 @@ libautosar_la_SOURCES =		\
 	app/app_define.h	\
 	app/app_config.c	\
 	app/app_config.h	\
+	app/app_isr.c	        \
+	app/app_isr.h	        \
 	os_timer.c		\
 	os_timer.h		\
 	os_hook.h		\

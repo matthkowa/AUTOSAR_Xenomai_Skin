@@ -126,6 +126,7 @@ static void *hook_entry(void *__arg){
 			PostTaskHook();
 #endif
 		unlockScheduler(__hook);
+		__ret = eventobj_post(&__hook->evobj, ~__flag);
 	}
 	return NULL;
 }
@@ -247,6 +248,8 @@ out:
 StatusType __ActivateOsHook(unsigned int __flag, StatusType __error){
 	StatusType __ret = E_OK;
 	struct service __svc;
+	unsigned int __mask = 0;
+	int __evobj_mode = 0;
 	struct OsHookXenomai * __hook = NULL;
 	if(__flag == OS_STARTUP_HOOK_FLAG)
 		__hook = OsHook_table[0];
@@ -268,9 +271,14 @@ StatusType __ActivateOsHook(unsigned int __flag, StatusType __error){
 	threadobj_lock(&__hook->thobj);
 	__hook->Error = __error;
 	__ret = eventobj_post(&__hook->evobj, __flag);
-		
+	__evobj_mode = EVOBJ_ANY;
 	threadobj_unlock(&__hook->thobj);
-	
+	warning("Wait For signal return");
+	__ret = eventobj_wait(&__hook->evobj, ~__flag, &__mask,__evobj_mode, NULL);
+	if(__ret != 0 && __ret != -ETIMEDOUT)
+			goto out;
+	warning("Wait For signal returned");	
+	__ret = eventobj_clear(&__hook->evobj, __mask, &__mask);
 	CANCEL_RESTORE(__svc);
 out : 
 	return __ret;

@@ -117,9 +117,17 @@ extern StatusType ReleaseResource(ResourceType ResID);
 /**************************** END OF RESOURCE ****************************/
 /********************************** ISR **********************************/
 
+#define ISR(FuncName) void FuncName##_ISR()
 typedef uintptr_t ISRType;
 
 extern ISRType GetISRID(void);
+
+extern void EnableAllInterrupts(void);
+extern void DisableAllInterrupts(void);
+extern void ResumeAllInterrupts(void);
+extern void SuspendAllInterrupts(void);
+extern void ResumeOSInterrupts(void);
+extern void SuspendOSInterrupts(void);
 
 /******************************* END OF ISR ******************************/
 /********************************** HOOK *********************************/

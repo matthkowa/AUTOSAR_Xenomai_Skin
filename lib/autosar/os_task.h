@@ -56,6 +56,7 @@ struct OsTaskXenomai {
 	struct eventobj evobj;			/*!< Event object (Xenomai) */
 	TaskStateType state;			/*!< Autosar state */
 	uint32 activation_number;	/*!< Current number of activation */
+	pthread_t thread;
 };
 
 /***** Autosar Specific structure *****/
@@ -170,5 +171,7 @@ StatusType __GetTaskState(TaskType taskID, TaskStateRefType state);
  * \param taskID Task reference.
  */
 void __StopTask(TaskType taskID);
+
+StatusType __JoinTask(TaskType __taskID);
 
 #endif

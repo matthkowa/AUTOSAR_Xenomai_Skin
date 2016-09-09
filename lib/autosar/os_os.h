@@ -27,7 +27,7 @@ struct Os {
 	struct OsCounter ** OsCounter;		/*!< Array of all counters */
 //	struct OsEvent * OsEvent;
 //	struct OsIoc * OsIoc;
-//	struct OsIsr * OsIsr;
+	struct OsIsr ** OsIsr;
 	struct OsResource ** OsResource;	/*!< Array of all resources*/
 //	struct OsScheduleTable * OsScheduleTable;
 //	struct OsSpinlock * OsSpinlock;
