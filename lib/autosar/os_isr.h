@@ -3,7 +3,7 @@
 #include "os_types.h"
 #include "os_resource.h"
 #include "app/app_define.h"
-#include <rtdm/rtdm.h>
+
 #include <linux/ioctl.h>
 enum IsrCategory {
 	ISR_CATEGORY_1,

@@ -116,12 +116,10 @@ extern StatusType ReleaseResource(ResourceType ResID);
 
 /**************************** END OF RESOURCE ****************************/
 /********************************** ISR **********************************/
-
-#define ISR(FuncName) void FuncName##_ISR()
+#define ISR(ISRType) void ISRType##_routine()
 typedef uintptr_t ISRType;
 
 extern ISRType GetISRID(void);
-
 extern void EnableAllInterrupts(void);
 extern void DisableAllInterrupts(void);
 extern void ResumeAllInterrupts(void);
@@ -130,6 +128,17 @@ extern void ResumeOSInterrupts(void);
 extern void SuspendOSInterrupts(void);
 
 /******************************* END OF ISR ******************************/
+/********************************* EVENT *********************************/
+/*
+typedef uintptr_t EventMaskType;
+typedef EventMaskType * EventMaskRefType;
+
+extern StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
+extern StatusType ClearEvent(EventMaskType Mask);
+extern StatusType GetEvent(TaskType TaskID,EventMaskRefType Event);
+extern StatusType WaitEvent(EventMaskType Mask);
+*/
+/****************************** END OF EVENT *****************************/
 /********************************** HOOK *********************************/
 
 typedef uintptr_t OSServiceIdType;
@@ -195,5 +204,38 @@ extern AlarmType OSError_CancelAlarm_AlarmID(void);
 
 
 /****************************** END OF HOOK ******************************/
+/********************************** DIO **********************************/
+
+typedef uint32 Dio_ChannelType;
+typedef uint32 Dio_PortType;
+
+struct Dio_ChannelGroup {
+        uint32 mask;
+        uint8 offset;
+        Dio_PortType port;
+};
+
+typedef struct Dio_ChannelGroup Dio_ChannelGroupType;
+
+typedef uint8 Dio_LevelType;
+//#define STD_LOW         (Dio_LevelType)0
+//#define STD_HIGH        (Dio_LevelType)1
+typedef uint32 Dio_PortLevelType;
+
+struct Dio_ConfigType {
+
+
+};
+
+extern Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId);
+extern void Dio_WriteChannel(Dio_ChannelType ChannelId,Dio_LevelType Level);
+extern Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId);
+extern void Dio_WritePort(Dio_PortType PortId,Dio_PortLevelType Level);
+extern Dio_PortLevelType Dio_ReadChannelGroup(const Dio_ChannelGroupType * ChannelGroupIdPtr);
+extern void Dio_WriteChannelGroup(const Dio_ChannelGroupType* ChannelGroupIdPtr, Dio_PortLevelType Level);
+extern void Dio_GetVersionInfo(Std_VersionInfoType * VersionInfo);
+extern Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId);
+/****************************** END OF DIO *******************************/
+
 
 #endif /* _XENOMAI_AUTOSAR_OS_H */

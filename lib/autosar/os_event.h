@@ -7,7 +7,10 @@ struct OsEvent {
 };
 
 
-
+StatusType __SetEvent(TaskType TaskID, EventMaskType Mask);
+StatusType __ClearEvent(EventMaskType Mask);
+StatusType __GetEvent(TaskType TaskID,EventMaskRefType Event);
+StatusType __WaitEvent(EventMaskType Mask);
 
 
 #endif

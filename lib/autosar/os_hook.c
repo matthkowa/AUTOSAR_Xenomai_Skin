@@ -110,6 +110,8 @@ static void *hook_entry(void *__arg){
 #if OS_SHUTDOWN_HOOK
 		if(__flag & OS_SHUTDOWN_HOOK_FLAG){
 			ShutdownHook(error);
+                        unlockScheduler(__hook);
+                        __ret = eventobj_post(&__hook->evobj, ~__flag);
 			break;
 		}
 #endif
@@ -128,6 +130,7 @@ static void *hook_entry(void *__arg){
 		unlockScheduler(__hook);
 		__ret = eventobj_post(&__hook->evobj, ~__flag);
 	}
+       
 	return NULL;
 }
 
@@ -273,11 +276,9 @@ StatusType __ActivateOsHook(unsigned int __flag, StatusType __error){
 	__ret = eventobj_post(&__hook->evobj, __flag);
 	__evobj_mode = EVOBJ_ANY;
 	threadobj_unlock(&__hook->thobj);
-	warning("Wait For signal return");
 	__ret = eventobj_wait(&__hook->evobj, ~__flag, &__mask,__evobj_mode, NULL);
 	if(__ret != 0 && __ret != -ETIMEDOUT)
 			goto out;
-	warning("Wait For signal returned");	
 	__ret = eventobj_clear(&__hook->evobj, __mask, &__mask);
 	CANCEL_RESTORE(__svc);
 out : 

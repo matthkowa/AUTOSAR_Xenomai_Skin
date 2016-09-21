@@ -8,27 +8,51 @@
 #ifndef _XENOMAI_AUTOSAR_OS_CFG_H
 #define _XENOMAI_AUTOSAR_OS_CFG_H
 /*********************** AppMode ***********************/
-#define OsAppModeDefault_ID			1u	
+#define app1_ID			1u	
 
-#define OsAppModeDefault				(AppModeType)OsAppModeDefault_ID	
+#define app1				(AppModeType)app1_ID	
+
 
 /************************ Tasks ************************/
-#define OsTask_100ms_ID			1u	
-#define OsTask_5ms_ID			2u	
+#define OsTask3_ID			1u	
+#define OsTask2_ID			2u	
+#define OsTask1_ID			3u	
 
-#define OsTask_100ms				(TaskType)OsTask_100ms_ID	
-#define OsTask_5ms				(TaskType)OsTask_5ms_ID	
+#define OsTask3				(TaskType)OsTask3_ID	
+#define OsTask2				(TaskType)OsTask2_ID	
+#define OsTask1				(TaskType)OsTask1_ID	
 
 /********************** Counters **********************/
-#define SystemCounter_ID			1u	
+#define counter1_ID			1u	
 
-#define SystemCounter				(CounterType)SystemCounter_ID	
+#define counter1				(CounterType)counter1_ID	
 
 /*********************** Alarms ***********************/
-#define OsAlarm_100ms_ID			1u	
-#define OsAlarm_5ms_ID			2u	
+#define alarm3_ID			1u	
+#define alarm2_ID			2u	
+#define alarm1_ID			3u	
 
-#define OsAlarm_100ms				(AlarmType)OsAlarm_100ms_ID	
-#define OsAlarm_5ms				(AlarmType)OsAlarm_5ms_ID	
+#define alarm3				(AlarmType)alarm3_ID	
+#define alarm2				(AlarmType)alarm2_ID	
+#define alarm1				(AlarmType)alarm1_ID	
+
+/*********************** RASPBERRY GPIO ***********************/
+
+#define GPIO4           1
+#define GPIO5           2
+#define GPIO6           3
+#define GPIO12          4
+#define GPIO13          5
+#define GPIO16          6
+#define GPIO17          7
+#define GPIO19          8
+#define GPIO20          9
+#define GPIO21          10
+#define GPIO22          11
+#define GPIO23          12
+#define GPIO24          13
+#define GPIO25          14
+#define GPIO26          15
+#define GPIO27          16
 
 #endif //_XENOMAI_AUTOSAR_OS_CFG_H

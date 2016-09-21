@@ -4,12 +4,12 @@
 #include "app/isr.h"
 #include "app/app_isr.h"
 #include <copperplate/internal.h>
-
+#include <rtdm/rtdm.h>
 ISRType __GetISRID(){
 
 	return 0;
 }
-
+/*
 static struct OsIsr * __getISR(ISRType __ISRID){
         struct OsIsr * __osIsr = NULL;
 	if(__ISRID <= ISR_COUNT_MANUEL && __ISRID >= 1){	
@@ -19,6 +19,8 @@ static struct OsIsr * __getISR(ISRType __ISRID){
 } 
 
 void __InitISR(ISRType __ISRID){
+        int ret;
+        warning("Init ISR");
         struct OsIsr * __osIsr = __getISR(__ISRID);
         if(__osIsr == NULL)
                 goto out;
@@ -27,8 +29,14 @@ void __InitISR(ISRType __ISRID){
                 warning("Stderr, fd %s",__osIsr->fd);
                 return;
         }
-        ioctl(__osIsr->fd,IOCTL_INIT_ISR,__osIsr->handler);
-        ioctl(__osIsr->fd, IOCTL_ENABLE_INTERRUPT, NULL);
+        warning("IOCTL ISR");
+        if((ret = ioctl(__osIsr->fd,IOCTL_INIT_ISR,__osIsr->handler))<0){
+                warning("IOCTL ret : %d",ret);
+        }
+        warning("IOCTL ISR");
+        if((ret = ioctl(__osIsr->fd, IOCTL_ENABLE_INTERRUPT, NULL))<0){
+                warning("IOCTL ret : %d",ret);
+        }
 out :
         return;
 }
@@ -99,4 +107,4 @@ void __SuspendOSInterrupts(){
                         break;
                 ioctl(__osIsr->fd, IOCTL_SUSPEND_OS_INTERRUPT, NULL);
         }
-}
+}*/

@@ -12,9 +12,10 @@
 #include "os_hook.h"
 #include "os_resource.h"
 #include "os_isr.h"
+#include "Dio.h"
 #include "app/app_config.h"
 #include "app/app_define.h"
-
+#include "app/app_isr.h"
 #include <stdio.h>
 #include <unistd.h>
 #include "copperplate/internal.h"
@@ -71,6 +72,8 @@ static void initSystem (void){
 #if OS_POST_TASK_HOOK
 	__CreateHook(OS_POST_TASK_HOOK_FLAG); 
 #endif
+
+        __InitDio();
 	if(result){
 		//TODO ERROR HOOK		
 	}
@@ -84,6 +87,12 @@ static void startSystem (AppModeType mode){
   StatusType result = E_OK;
 #if TASK_COUNT > 0
 struct OsTaskAutostart * OsTaskAutostart;
+#else
+#if COUNTER_COUNT > 0
+        struct timespec rqt;
+	struct service svc;
+	long long ticks = 1000;
+#endif
 #endif
 #if ALARM_COUNT > 0
 struct OsAlarmAutostart * OsAlarmAutostart;
@@ -106,10 +115,10 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 			//result = __ActivateAlarm(i);
 	}
 #endif
-#if ISR_COUNT_MANUEL > 0
-        for(i = 1; i <= ISR_COUNT_MANUEL; i++)	
+//#if ISR_COUNT_MANUEL > 0
+/*        for(i = 1; i <= ISR_COUNT_MANUEL; i++)	
 		__InitISR(i);
-#endif
+*///#endif
 #if COUNTER_COUNT > 0
 	for(i = 1; i <= COUNTER_COUNT; i++)	
 		__CreateCounter(i);
@@ -118,25 +127,11 @@ struct OsAlarmAutostart * OsAlarmAutostart;
 		//TODO ERROR HOOK
 		
 	}
-/*	struct timespec rqt;
-	struct service svc;
-	long long ticks = 1000;
-*/	
-	/*CANCEL_DEFER(svc);
-	clockobj_ticks_to_timeout(&autosar_clock, ticks, &rqt);
-	CANCEL_RESTORE(svc);
-	threadobj_sleep(&rqt);
-	
 
-	
-	while(!shutdown_state){threadobj_sleep(&rqt);};
-	warning("End");*/
 #if TASK_COUNT > 0
-	for(i = 1; i <= TASK_COUNT; i++){
-		warning("Join Task %d",i);	
-		__JoinTask(i);
-		warning("Joined Task %d",i);
-	}
+	for(i = 1; i <= TASK_COUNT; i++){	
+        	__JoinTask(i);
+        }	
 #else 
 #if COUNTER_COUNT > 0
 	while(!shutdown_state){
@@ -204,12 +199,12 @@ void StartOS (AppModeType Mode){
  * \param [in] Error error occurred
  */
 void ShutdownOS (StatusType Error){
+        
+        __StopDio();
 #if OS_SHUTDOWN_HOOK
 	__ActivateOsHook(OS_SHUTDOWN_HOOK_FLAG,Error);
 #endif
-warning("End of ActivateOsHook");	
 	__StopCounter();
-warning("Stop Counter ?");
 #if TASK_COUNT > 0 || ALARM_COUNT > 0 
   	int i; 
 #endif
@@ -222,7 +217,6 @@ warning("Stop Counter ?");
 	for (i = 1; i <= TASK_COUNT; i++)	
 		__StopTask(i);
 #endif
-warning("Stoped Task");
 #if OS_STARTUP_HOOK 
 	__StopHook(OS_STARTUP_HOOK_FLAG); 
 #endif
@@ -488,28 +482,55 @@ ISRType GetISRID(void){
 }
 
 void EnableAllInterrupts(void){
-	__EnableAllInterrupts();
+	//__EnableAllInterrupts();
 }
 
 void DisableAllInterrupts(void){
-	__DisableAllInterrupts();
+	//__DisableAllInterrupts();
 }
 
 void ResumeAllInterrupts(void){ 
-	__ResumeAllInterrupts();
+	//__ResumeAllInterrupts();
 }
 
 void SuspendAllInterrupts(void){ 
-	__SuspendAllInterrupts();
+	//__SuspendAllInterrupts();
 }
 
 void ResumeOSInterrupts(void){ 
-	__ResumeOSInterrupts();
+	//__ResumeOSInterrupts();
 }
 
 void SuspendOSInterrupts(void){ 
-	__SuspendOSInterrupts();
+	//__SuspendOSInterrupts();
 }
+
+Dio_LevelType Dio_ReadChannel(Dio_ChannelType __ChannelId){
+        return __Dio_ReadChannel(__ChannelId);
+}
+void Dio_WriteChannel(Dio_ChannelType __ChannelId,Dio_LevelType __Level){
+        __Dio_WriteChannel(__ChannelId,__Level);
+}
+Dio_PortLevelType Dio_ReadPort(Dio_PortType __PortId){
+        return __Dio_ReadPort(__PortId);
+}
+void Dio_WritePort(Dio_PortType __PortId,Dio_PortLevelType __Level){
+        __Dio_WritePort(__PortId,__Level);
+}
+Dio_PortLevelType Dio_ReadChannelGroup(const Dio_ChannelGroupType * __ChannelGroupIdPtr){
+        return __Dio_ReadChannelGroup(__ChannelGroupIdPtr);
+}
+void Dio_WriteChannelGroup(const Dio_ChannelGroupType* __ChannelGroupIdPtr, Dio_PortLevelType __Level){
+        __Dio_WriteChannelGroup(__ChannelGroupIdPtr,__Level);
+}
+void Dio_GetVersionInfo(Std_VersionInfoType * __VersionInfo){
+        __Dio_GetVersionInfo(__VersionInfo);
+}
+Dio_LevelType Dio_FlipChannel(Dio_ChannelType __ChannelId){
+        return __Dio_FlipChannel(__ChannelId);
+}
+
+
 #if COUNTER_COUNT > 0
 /**
  * \fn StatusType IncrementCounter(CounterType CounterID)
@@ -556,6 +577,8 @@ StatusType GetCounterValue(CounterType CounterID,TickRefType Value){
 StatusType GetElapsedValue(CounterType CounterID,TickRefType Value,TickRefType ElapsedValue){
 	return __GetElapsedValue(CounterID,Value,ElapsedValue);
 }
+
+
 
 
 

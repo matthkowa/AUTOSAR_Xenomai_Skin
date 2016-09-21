@@ -30,6 +30,9 @@ libautosar_la_SOURCES =		\
 	os_counter.h		\
 	os_resource.h		\
 	os_resource.c		\
+        HW/Config.h             \
+        Dio.h                   \
+        Dio.c                   \
 	init.c		
 
 libautosar_la_CPPFLAGS =				\

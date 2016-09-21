@@ -1,12 +1,12 @@
-/*#include "os_isr.h"
+#include "os_isr.h"
 #include "app/app_isr.h"
-
+/*
 extern void OsIsr1_routine(void);
 
 struct OsIsr OsIsr1_OsIsr = {
         ISR_CATEGORY_2,
 	NULL,
-        "ISR1",
+        "/dev/rtdm/ISR1",
         0,
         OsIsr1_routine
 };
