@@ -1,0 +1,4 @@
+
+config XENO_DRIVERS_AUTOSAR
+	bool "Enable Drive AUTOSAR"
+        default y
