@@ -3,7 +3,7 @@
 #include <copperplate/internal.h>
 #include <rtdm/rtdm.h>
 #include <linux/ioctl.h>
-#include "HW/RTDM_GPIO.h"
+#include <rtdm/uapi/autosar.h>
 #include "HW/Config.h"
 struct dataIOCTL * __data ;
 int __fd;
