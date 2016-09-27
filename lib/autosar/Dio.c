@@ -35,7 +35,6 @@ Dio_LevelType __Dio_ReadChannel(Dio_ChannelType __ChannelId){
 
 void __Dio_WriteChannel(Dio_ChannelType __ChannelId,Dio_LevelType __Level){
         struct DIOXenomai * __DioXenomai = __get_Dio_Channel(__ChannelId);
-        warning("Write Channel Pin : %d Value : %d",__DioXenomai->Pin,__Level);
         if(__DioXenomai == NULL)
                 return ;        
 
@@ -74,7 +73,6 @@ void __InitDio(void){
                 return;
         }
         __data = malloc(sizeof(struct dataIOCTL));
-        warning("Init Done");
 }
 
 void __StopDio(void){

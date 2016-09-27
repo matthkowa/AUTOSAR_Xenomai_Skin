@@ -74,7 +74,6 @@ static inline void init_corespec(void) { }
 static int autosar_init(void)
 {
 	int ret;
-	warning("Xenomai-init autosar\n");
 	syncluster_init(&xenomai_autosar_task_table, "autosar.task");
 	syncluster_init(&xenomai_autosar_resource_table, "autosar.resource");
 	pvcluster_init(&xenomai_autosar_alarm_table, "autosar.alarm");
