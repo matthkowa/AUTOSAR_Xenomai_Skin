@@ -1,9 +1,9 @@
 /**
  *
- *	\file init.c
+ *	\file os_alarm.c
  *	\brief Alarm implementation
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 

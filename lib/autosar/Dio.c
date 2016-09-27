@@ -1,5 +1,12 @@
+/**
+ *
+ *	\file Dio.c
+ *	\brief Digital Input Output implementation 
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
+ *	\date 29 Juin 2016
+*/
 #include "Dio.h"
-
 #include <copperplate/internal.h>
 #include <rtdm/rtdm.h>
 #include <linux/ioctl.h>

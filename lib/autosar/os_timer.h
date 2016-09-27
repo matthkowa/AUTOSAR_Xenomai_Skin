@@ -1,6 +1,11 @@
-/*Timer
+/**
+ *
+ *	\file os_timer.h
+ *	\brief Xenomai timer header 
+ *	\author  Matthieu Kowalewski.
+ *	\version 1.0
+ *	\date 29 Juin 2016
 */
-
 #ifndef _AUTOSAR_TIMER_H
 #define _AUTOSAR_TIMER_H
 

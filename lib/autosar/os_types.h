@@ -1,9 +1,9 @@
 /**
  *
- *	\file os_types.c
- *	\brief Types definition
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\file os_types.h
+ *	\brief Types definition header
+ *	\author  Matthieu Kowalewski.
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 
@@ -33,18 +33,18 @@ typedef void (*EcucFunctionNameDef)(void);
 typedef struct EcucCoreDefintion EcucCoreDefintion;
 
 struct EcucCoreDefintion {
+	uint64 EcucCoreId;        
 	// EcucCoreHwRef
-	uint64 EcucCoreId;
 };
 
 typedef struct EcucPartition EcucPartition;
 
 struct EcucPartition {
-	// EcucPartitionBswModuleDistinguishedPartition
 	EcucBooleanParamDef EcucPartitionBswModuleExecution;
 	EcucBooleanParamDef EcucPartitionQmBswModuleExecution;
+	EcucBooleanParamDef PartitionCanBeRestarted;
 	// EcucPartitionSoftwareComponentInstanceRef;
-	EcucBooleanParamDef PartitionCanBeRestarted;	
+	// EcucPartitionBswModuleDistinguishedPartition	
 };
 
 

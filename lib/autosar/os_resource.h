@@ -2,8 +2,8 @@
  *
  *	\file os_resource.h
  *	\brief Resource header
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 #ifndef _AUTOSAR_RESOURCE_H
@@ -13,7 +13,10 @@
 #include <copperplate/cluster.h>
 #include <copperplate/registry.h>
 
+/************************** MACRO DEFINITION ****************************/
 #define resource_magic	0x0909F6F6
+
+/************************* STRUCTURE DEFINITION *************************/
 /*
  *	\enum ResourceProperty
  *	\brief Type of the Resource
@@ -31,9 +34,9 @@ typedef enum ResourceProperty OsResourceProperty;
  */
 struct OsResource{
 	OsResourceProperty OsResourceProperty;			/*!< OsResourceProperty */
-//	struct OsApplication * OsApplicationAccessingApplication;
 	struct OsResource * OsResourceLinkedResourceRef;	/*!< Array of linked resources */
 	struct OsResourceXenomai * OsResourceXenomai;		/*!< Xenomai implementation for a Resource */
+        //	struct OsApplication * OsApplicationAccessingApplication;
 };
 
 
@@ -56,15 +59,51 @@ struct OsResourceXenomai {
 
 
 
+/************************* FUNCTION DEFINITION *************************/
 
+/**
+ * \fn StatusType __CreateResource(ResourceType ResID)
+ * \brief Create and init AUTOSAR resource with OsResource configuration 
+ * \param resourceID Resource reference.
+ * \return E_OK if no error, E_OS_ID if resourceID doesn't exist.
+ */
 StatusType __CreateResource(ResourceType ResID);
 
+/**
+ * \fn StatusType __GetOsResource(struct OsResource * osResource)
+ * \brief Lock the resource<ResID> 
+ * \param osResource Resource structure to lock
+ * \return E_OK if no error  
+ */
 StatusType __GetOsResource(struct OsResource * osResource);
+
+/**
+ * \fn StatusType __GetResource(ResourceType ResID)
+ * \brief Cf ::GetResource 
+ */
 StatusType __GetResource(ResourceType ResID);
 
+/**
+ * \fn StatusType __ReleaseOsResource(struct OsResource * osResource)
+ * \brief Unlock the resource<ResID> 
+ * \param osResource Resource structure to unlock
+ * \return E_OK if no error  
+ */
 StatusType __ReleaseOsResource(struct OsResource * osResource);
+
+/**
+ * \fn StatusType __ReleaseResource(struct OsResource * ResID)
+ * \brief Cf ::ReleaseResource
+ */
 StatusType __ReleaseResource(ResourceType ResID);
 
+
+/**
+ * \fn StatusType __GetStatus(struct OsResource * osResource)
+ * \brief Get the current state of the resource (Lock or Unlock)
+ * \param osResource Resource structure to be check
+ * \return 0 if unlock 1 if lock
+ */
 int __GetStatus(struct OsResource * osResource);
 
 

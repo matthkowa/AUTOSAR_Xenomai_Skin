@@ -2,8 +2,8 @@
  *
  *	\file os_resource.c
  *	\brief Resource implementation
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 #include "os_resource.h"

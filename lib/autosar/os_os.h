@@ -2,8 +2,8 @@
  *
  *	\file os_os.h
  *	\brief Autosar Os header 
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
  *	\date 29 Juin 2016
 */	
 #ifndef _AUTOSAR_OS_H
@@ -16,6 +16,7 @@
 #include "os_task.h"
 #include "os_appmode.h"
 
+/************************* STRUCTURE DEFINITION *************************/
 /*
  *	\struct autosar_queue_wait 
  *	\brief Xenomai structur
@@ -23,15 +24,15 @@
 struct Os {
 	struct OsAlarm ** OsAlarm; 		/*!< Array of all alarms */
 	struct OsAppMode ** OsAppMode;		/*!< Array of all appmodes */
-//	struct OsApplication * OsApplication;
 	struct OsCounter ** OsCounter;		/*!< Array of all counters */
-//	struct OsEvent * OsEvent;
-//	struct OsIoc * OsIoc;
 	struct OsIsr ** OsIsr;
 	struct OsResource ** OsResource;	/*!< Array of all resources*/
-//	struct OsScheduleTable * OsScheduleTable;
-//	struct OsSpinlock * OsSpinlock;
 	struct OsTask ** OsTask;		/*!< Array of all tasks */
+        //	struct OsEvent * OsEvent;
+        //	struct OsIoc * OsIoc;
+        //	struct OsScheduleTable * OsScheduleTable;
+        //	struct OsSpinlock * OsSpinlock;
+        //	struct OsApplication * OsApplication;
 };
 
 #endif

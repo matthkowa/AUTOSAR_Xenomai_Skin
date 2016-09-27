@@ -1,4 +1,12 @@
-//#include <linux/interrupt.h>
+/**
+ *
+ *	\file  os_isr.c
+ *	\brief Interrupt Service Routine implementation
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
+ *	\date 29 Juin 2016
+*/
+
 #include "os_isr.h"
 #include "app/app_config.h"
 #include "app/isr.h"

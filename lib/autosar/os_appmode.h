@@ -2,13 +2,15 @@
  *
  *	\file os_appmode.h
  *	\brief AppMode header
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 #ifndef _AUTOSAR_APPMODE_H
 #define _AUTOSAR_APPMODE_H
 #include "os_types.h"
+
+/************************* STRUCTURE DEFINITION *************************/
 /*
  *	\struct OsAppMode
  *	\brief Application Mode structure 

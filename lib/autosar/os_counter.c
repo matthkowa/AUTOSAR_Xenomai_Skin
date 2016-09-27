@@ -2,8 +2,8 @@
  *
  *	\file os_counter.c
  *	\brief Counter implementation
- *	\author  Matthieu K.
- *	\version 0.1
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 

@@ -1,3 +1,12 @@
+/**
+ *
+ *	\file os_event.c
+ *	\brief Event implementation
+ *	\author  Matthieu Kowalewski
+ *	\version 1.0
+ *	\date 29 Juin 2016
+*/
+
 #include "os_event.h"
 #include "os_task.h"
 

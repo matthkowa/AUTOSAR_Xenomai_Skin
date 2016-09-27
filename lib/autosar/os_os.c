@@ -3,7 +3,7 @@
  *	\file  os_os.c
  *	\brief Os services implementation
  *	\author  Matthieu K.
- *	\version 0.1
+ *	\version 1.0
  *	\date 29 Juin 2016
 */
 #include "os_os.h"
